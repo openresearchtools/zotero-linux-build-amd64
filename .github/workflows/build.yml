@@ -1,0 +1,24 @@
+name: Zotero native Linux amd64
+run-name: Zotero ${{ inputs.source_sha }} / ${{ inputs.request_id }}
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact shared Zotero source commit
+        required: true
+        type: string
+      request_id:
+        description: Request identifier from the source workflow
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: zotero-linux-amd64-${{ inputs.source_sha }}
+  cancel-in-progress: false
+jobs:
+  build:
+    uses: openresearchtools/zotero-termux/.github/workflows/linux-native.yml@f26ffb2d0af02f11736099ac84f5e3e849a9fd04
+    with:
+      source_sha: ${{ inputs.source_sha }}
+      architecture: amd64
